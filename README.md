@@ -1,2 +1,2 @@
-# PolicyChecker.ios
-iOS Library that works with the MIAA Policy Checker service
+# LoginEligibility.iOS
+iOS Framework that works with the MIAA Policy Checker service
