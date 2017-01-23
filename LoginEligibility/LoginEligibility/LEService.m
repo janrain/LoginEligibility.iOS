@@ -179,9 +179,11 @@ NS_ASSUME_NONNULL_BEGIN
         [self checkLogin:accessTokenKey];
     }else{
         NSString *errorText = @"checkLoginWithToken: accessToken is empty or nil";
+        NSDictionary *errorDict = [NSDictionary dictionaryWithObjectsAndKeys:
+                                   errorText, @"errorCode",nil];
         *checkError = [LEError errorWithCode:LEErrorCodeNilAccessToken
                             description:errorText];
-        [self.delegate leServiceFailure:errorText];
+        [self.delegate leServiceFailure:errorDict];
     }
 }
 
@@ -193,9 +195,11 @@ NS_ASSUME_NONNULL_BEGIN
         [self checkLogin:uuidKey];
     }else{
         NSString *errorText = @"checkLoginWithUUID: UUID is empty or nil";
+        NSDictionary *errorDict = [NSDictionary dictionaryWithObjectsAndKeys:
+                                  errorText, @"errorCode",nil];
         *checkError = [LEError errorWithCode:LEErrorCodeNilUUID
                             description:errorText];
-        [self.delegate leServiceFailure:errorText];
+        [self.delegate leServiceFailure:errorDict];
     }
     
 }
@@ -205,24 +209,30 @@ NS_ASSUME_NONNULL_BEGIN
                   withHandler:^(NSData *rawData, NSURLResponse *response, NSError *error) {
                       NSString *string = [[NSString alloc] initWithData:rawData
                                                                encoding:NSUTF8StringEncoding];
-                      
                       NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
                       NSInteger code = [httpResponse statusCode];
                       NSLog(@"LEService response %@ with code %ld and error %@.\n", response, code, error);
+                      NSDictionary *errorDict;
                       if(error){
                           NSLog(@"NSURL Error: %@", [error description]);
-                          [self.delegate leServiceFailure:[error localizedDescription]];
+                          errorDict = [NSDictionary dictionaryWithObjectsAndKeys:
+                                       [error localizedDescription], @"errorCode",nil];
+                          [self.delegate leServiceFailure:errorDict];
                       } else if (!(code >= 200 && code < 300)) {
-                          NSString *errorData = [NSString stringWithFormat:@"HTTP Error (%ld): %@", (long)code, string];
+                          NSString *errorData = [NSString stringWithFormat:@"HTTP Error (%ld)", (long)code];
                           NSLog(@"%@", errorData);
-                          [self.delegate leServiceFailure:errorData];
+                          errorDict = [NSDictionary dictionaryWithObjectsAndKeys:
+                                       errorData, @"errorCode",nil];
+                          [self.delegate leServiceFailure:errorDict];
                       } else {
                           NSError* jsonError;
                           NSDictionary* result = [NSJSONSerialization JSONObjectWithData:rawData
                                                                                options:kNilOptions
                                                                                  error:&jsonError];
                           if(jsonError){
-                              NSLog(@"JSON Conversion Error : %@", [error description]);
+                              errorDict = [NSDictionary dictionaryWithObjectsAndKeys:
+                                           [error description], @"errorCode",nil];
+                              NSLog(@"JSON Conversion Error : %@", errorDict);
                           }else{
                               [self.delegate leServiceSuccess:result];
                           }

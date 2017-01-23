@@ -382,7 +382,9 @@ static NSString *const kViolatesDocument = @"{\"request\": {\"subject\": {\"id\"
         if (error != nil) {
             XCTFail(@"Failure: checkLoginWithToken exceeded 2 seconds.");
         }
-        XCTAssertEqualObjects(testDelegate.errorData, @"404 - Not Found");
+        NSDictionary *errorDict = [NSDictionary dictionaryWithObjectsAndKeys:
+                                   @"404 - Not Found", @"errorCode",nil];
+        XCTAssertEqualObjects(testDelegate.errorData, errorDict);
         XCTAssertNil(testDelegate.compliesDict);
         XCTAssertNil(testDelegate.violatesDict);
         
@@ -434,7 +436,9 @@ static NSString *const kViolatesDocument = @"{\"request\": {\"subject\": {\"id\"
         if (error != nil) {
             XCTFail(@"Failure: checkLoginWithToken exceeded 2 seconds.");
         }
-        XCTAssertEqualObjects(testDelegate.errorData, @"HTTP Error (404): {\n  \"Error\" : \"404 - Not Found\"\n}");
+        NSDictionary *errorDict = [NSDictionary dictionaryWithObjectsAndKeys:
+                                           @"HTTP Error (404)", @"errorCode",nil];
+        XCTAssertEqualObjects(testDelegate.errorData, errorDict);
         XCTAssertNil(testDelegate.compliesDict);
         XCTAssertNil(testDelegate.violatesDict);
         
