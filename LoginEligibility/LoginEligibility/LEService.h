@@ -68,7 +68,7 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol LEServiceDelegate <NSObject>
 
 - (void)leServiceSuccess:(NSDictionary *)result;
-- (void)leServiceFailure:(NSString *)error;
+- (void)leServiceFailure:(NSDictionary *)error;
 
 @end
 
