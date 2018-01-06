@@ -75,6 +75,9 @@ typedef void(^TeardownTask)();
 @end
 
 
+/**
+ <#Description#>
+ */
 @implementation LEServiceTests{
     /*! @brief A list of tasks to perform during tearDown.
      */
@@ -521,7 +524,7 @@ static NSString *const kViolatesDocument = @"{\"request\": {\"subject\": {\"id\"
         }
         XCTAssertNil(testDelegate.compliesDict);
         XCTAssertNil(testDelegate.violatesDict);
-        XCTAssertEqualObjects(testDelegate.errorData, @"checkLoginWithUUID: UUID is empty or nil");
+         XCTAssertEqualObjects([testDelegate.errorData valueForKeyPath:@"errorCode"], @"checkLoginWithUUID: UUID is empty or nil");
         
     }];
 }
@@ -548,7 +551,7 @@ static NSString *const kViolatesDocument = @"{\"request\": {\"subject\": {\"id\"
         }
         XCTAssertNil(testDelegate.compliesDict);
         XCTAssertNil(testDelegate.violatesDict);
-        XCTAssertEqualObjects(testDelegate.errorData, @"checkLoginWithToken: accessToken is empty or nil");
+        XCTAssertEqualObjects([testDelegate.errorData valueForKeyPath:@"errorCode"], @"checkLoginWithToken: accessToken is empty or nil");
     }];
 }
 

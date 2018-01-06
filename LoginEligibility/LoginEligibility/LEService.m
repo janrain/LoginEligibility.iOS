@@ -207,8 +207,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)checkLogin:(NSDictionary *)subjectKey{
     [self postToPolicyChecker:subjectKey
                   withHandler:^(NSData *rawData, NSURLResponse *response, NSError *error) {
-                      NSString *string = [[NSString alloc] initWithData:rawData
-                                                               encoding:NSUTF8StringEncoding];
+                      //NSString *string = [[NSString alloc] initWithData:rawData
+                      //                                         encoding:NSUTF8StringEncoding];
                       NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
                       NSInteger code = [httpResponse statusCode];
                       NSLog(@"LEService response %@ with code %ld and error %@.\n", response, code, error);
